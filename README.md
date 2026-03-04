@@ -1,7 +1,7 @@
 # BlackJack ♠ with House Rules / ハウスルール付きブラックジャック
 
 ## Play プレイ ---> [here こちら](https://phuahjinwei.github.io/BlackJack-Mobile/)
-<img src="asset/demoPic.png" alt="demoPic" width="40%">
+<img src="asset/demoPic.png" alt="demoPic" width="50%">
 
 ## 🏠 House Rules (Important!)
 
