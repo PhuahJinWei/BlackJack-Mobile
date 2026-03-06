@@ -400,7 +400,14 @@
 				onEnd(e,delta,start,velocity){
 					potArea.classList.remove('drag-over');
 					if(!ghost||!wasDragged||gamePhase!=='betting'){
-						if(ghost){ghost.remove();ghost=null;}return;
+						if(ghost){ghost.remove();ghost=null;}
+						// makeDraggable calls e.preventDefault() on touchstart, which
+						// suppresses the synthetic 'click' on mobile. Handle tap here.
+						if(!wasDragged&&(e.type==='touchend'||e.type==='touchcancel')&&gamePhase==='betting'){
+							const v=parseInt(chip.dataset.val);
+							if(bet+v<=balance){bet+=v;addChipToPot(v);updateBet();updateButtons();AudioMgr.playChipDrop();}
+						}
+						return;
 					}
 					const v=parseInt(chip.dataset.val);
 					if(bet+v>balance){ghost.remove();ghost=null;return;}
