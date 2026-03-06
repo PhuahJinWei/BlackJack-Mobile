@@ -67,7 +67,7 @@
 		position:relative;text-align:center;
 		padding:3px 6px;border-radius:8px;
 		transition:box-shadow .3s;
-		background:rgba(0,0,0,.08);
+		background:rgba(0,0,0,.05);
 	}
 	.player-area.active-turn{
 		box-shadow:0 0 0 2px var(--gold),0 0 14px rgba(212,168,68,.45);
@@ -342,4 +342,5 @@
 	}
 	@media(min-aspect-ratio:5/4){
 		#game-frame{max-width:480px}
+
 	}
