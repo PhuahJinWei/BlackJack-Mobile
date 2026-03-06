@@ -8,20 +8,45 @@
 			new Audio('asset/audio/card_flip_3.ogg'),
 			new Audio('asset/audio/card_flip_4.ogg'),
 		];
-		const shuffle=new Audio('asset/audio/card_suffle.ogg');
+		const shuffle=[
+			new Audio('asset/audio/card_suffle_1.ogg'),
+			new Audio('asset/audio/card_suffle_2.ogg'),
+		];
+		const chipStack=[
+			new Audio('asset/audio/chip_stack_1.ogg'),
+			new Audio('asset/audio/chip_stack_2.ogg'),
+			new Audio('asset/audio/chip_stack_3.ogg'),
+			new Audio('asset/audio/chip_stack_4.ogg'),
+			new Audio('asset/audio/chip_stack_5.ogg'),
+			new Audio('asset/audio/chip_stack_6.ogg'),
+		];
+		const cardDraw=new Audio('asset/audio/card_draw.ogg');
 		const chipDrop=new Audio('asset/audio/chip_drop.ogg');
 		const sfxClick=new Audio('asset/audio/sfx_click.ogg');
+		
 		flips.forEach(a=>a.load());
-		shuffle.load();chipDrop.load();sfxClick.load();
+		shuffle.forEach(a=>a.load());
+		chipStack.forEach(a=>a.load());
+		chipDrop.load();
+		sfxClick.load();
 
 		function playFlip(){
 			const s=flips[Math.floor(Math.random()*flips.length)];
 			const c=s.cloneNode();c.volume=s.volume;c.play().catch(()=>{});
 		}
-		function playShuffle(){shuffle.currentTime=0;shuffle.play().catch(()=>{});}
+		function playShuffle(){
+			shuffle.currentTime=0;
+			const s=shuffle[Math.floor(Math.random()*shuffle.length)];
+			const c=s.cloneNode();c.volume=s.volume;c.play().catch(()=>{});
+		}
+		function playChipStack(){
+			const s=chipStack[Math.floor(Math.random()*chipStack.length)];
+			const c=s.cloneNode();c.volume=s.volume;c.play().catch(()=>{});
+		}
+		function playCardDraw(){const c=cardDraw.cloneNode();c.volume=cardDraw.volume;c.play().catch(()=>{});}
 		function playChipDrop(){const c=chipDrop.cloneNode();c.volume=chipDrop.volume;c.play().catch(()=>{});}
 		function playClick(){const c=sfxClick.cloneNode();c.volume=sfxClick.volume;c.play().catch(()=>{});}
-		return{playFlip,playShuffle,playChipDrop,playClick};
+		return{playFlip,playShuffle,playChipStack,playCardDraw,playChipDrop,playClick};
 	})();
 
 
@@ -327,6 +352,7 @@
 		makeDraggable(deckPile,{
 			onStart(e){
 				if(gamePhase!=='player-turn'||hitInProgress)return;
+				AudioMgr.playCardDraw();
 				deckPile.classList.add('active-drag');
 				const p=getPointerXY(e);
 				ghost=document.createElement('div');ghost.className='drag-ghost';
@@ -374,6 +400,7 @@
 					if(gamePhase!=='betting')return;
 					const v=parseInt(chip.dataset.val);
 					if(bet+v>balance)return;
+					AudioMgr.playChipStack();
 					wasDragged=false;
 					const p=getPointerXY(e);
 					ghost=chip.cloneNode(true);
@@ -485,7 +512,7 @@
 			setTimeout(()=>{
 				cards.forEach(c=>c.classList.remove('shuffling'));
 				resolve();
-			},1800);
+			},1000);
 		});
 	}
 
