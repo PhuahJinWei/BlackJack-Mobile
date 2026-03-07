@@ -30,6 +30,21 @@
 		chipDrop.load();
 		sfxClick.load();
 
+		// Mobile browsers block audio until a user gesture occurs.
+		// On first touch/click, silently play-and-pause every element
+		// so the browser marks the page's audio session as active.
+		function _unlockAudio(){
+			const all=[...flips,...shuffle,...chipStack,cardDraw,chipDrop,sfxClick];
+			all.forEach(a=>{
+				a.muted=true;
+				const p=a.play();
+				if(p instanceof Promise)p.then(()=>{a.pause();a.currentTime=0;a.muted=false;}).catch(()=>{});
+				else{a.pause();a.currentTime=0;a.muted=false;}
+			});
+		}
+		document.addEventListener('touchstart',_unlockAudio,{once:true,passive:true});
+		document.addEventListener('click',_unlockAudio,{once:true});
+
 		function playFlip(){
 			const s=flips[Math.floor(Math.random()*flips.length)];
 			const c=s.cloneNode();c.volume=s.volume;c.play().catch(()=>{});
